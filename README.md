@@ -1,3 +1,8 @@
 # vCourt
-- A Vue.js 2.0 UI Toolkit for Web
-- 中文文档 http://iCourt-Alpha.github.io/vCourt/
+Vue2.0的🔧轻量级组件／工具库
+# 安装
+```javascript
+npm install vcourt
+```
+# 文档
+http://iCourt-Alpha.github.io/vCourt/
