@@ -1,6 +1,6 @@
 {
   "name": "vcourt",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "stylus": "^0.54.5"
+    "css-loader": "^0.28.4",
+    "style-loader": "^0.18.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1"
   }
 }

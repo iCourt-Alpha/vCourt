@@ -8,7 +8,7 @@ import Toast from './toast.vue'
 //   'error': 'close'
 // }
 
-function createToast (type, msg = '', duration = 3) {
+function createToast (type, msg = '', duration = 2) {
   var div = document.createElement('div')
   div.innerHTML = '<transition name="slide-in-down" v-on:after-leave="afterLeave"><Toast v-if="show" type="' + type + '" msg="' + msg + '" :duration="duration" @close="close"></Toast></transition>'
   div.className = 'vc-toast'
@@ -40,6 +40,7 @@ function createToast (type, msg = '', duration = 3) {
 }
 
 export default data => {
-  data.type = data.type || 'done'
+  if (typeof data === 'string') return createToast('info', data)
+  data.type = data.type || 'info'
   return createToast(data.type, data.msg, data.duration)
 }

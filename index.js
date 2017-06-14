@@ -1,18 +1,25 @@
 import alert from './components/alert'
-import Button from './components/button'
-import Icon from './components/icon'
-import LineThrough from './components/line-through'
-import VCMask from './components/mask'
-import Popup from './components/popup'
+import vcButton from './components/button'
+import vcIcon from './components/icon'
+import vcLineThrough from './components/line-through'
+import vcMask from './components/mask'
+import vcPopup from './components/popup'
+import { Row } from './components/grid'
+import { Col } from './components/grid'
+import vcPopup from './components/popup'
 import toast from './components/toast'
+// directive
 import './components/tooltip'
+import { dom } from './utils/dom'
 
 const vcComponents = {
-  Button,
-  Icon,
-  LineThrough,
-  VCMask,
-  Popup
+  vcButton,
+  vcIcon,
+  vcLineThrough,
+  vcMask,
+  vcPopup,
+  vcRow: Row,
+  vcCol: Col
 }
 
 const vcAddToPrototype = {
@@ -28,6 +35,8 @@ const install = Vue =>{
   Object.keys(vcAddToPrototype).forEach(key => {
     Vue.prototype.vc[key] = vcAddToPrototype[key]
   })
+  window.vc = {}
+  window.vc.dom = dom
 }
 
 export default Object.assign(vcComponents, {install})

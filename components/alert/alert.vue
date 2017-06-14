@@ -1,5 +1,5 @@
 <template>
-  <vcMask :maskShow="maskShow" @afterEnter="showCtn" @maskClicked="maskClicked" :bkg="'transparent'">
+  <vcMask :maskShow="maskShow" @afterEnter="showCtn" @maskClicked="maskClicked">
     <transition name="bounceIn" @after-leave="alertDisappear">
       <div class="vc-alert-box" v-if="showAlert">
         <div class="vc-alert-h">
@@ -12,7 +12,10 @@
         </div>
         <div class="vc-alert-f">
         <span class="vc-alert-btn">
-          <vcButton large @click="ok">确定</vcButton>
+          <vcButton @click="clickConfirm">确定</vcButton>
+        </span>
+        <span class="vc-alert-btn">
+          <vcButton type="primary" @click="clickCancel">取消</vcButton>
         </span>
         </div>
       </div>
@@ -32,20 +35,19 @@ export default {
   props: {
     title: {
       type: String,
-      default: ''
+      default: '提示'
     },
     ctn: {
       type: String,
       default: ''
     },
-    maskShow: {
-      type: Boolean,
-      default: false
-    }
+    confirm: Function,
+    cancel: Function
   },
   data () {
     return {
-      showAlert: false
+      showAlert: false,
+      maskShow: false
     }
   },
   methods: {
@@ -53,14 +55,23 @@ export default {
       this.showAlert = true
     },
     maskClicked () {
-      console.log('maskClicked~~')
     },
     alertDisappear () {
       this.$emit('alertDisappear')
     },
-    ok () {
+    clickConfirm () {
       this.showAlert = false
+      this.maskShow = false
+      this.confirm()
+    },
+    clickCancel () {
+      this.showAlert = false
+      this.maskShow = false
+      this.cancel()
     }
+  },
+  mounted () {
+    this.maskShow = true
   }
 }
 </script>

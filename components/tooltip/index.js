@@ -1,4 +1,4 @@
-import './tooltip.vue'
+import './tooltip.styl'
 import { on, off, addClass, removeClass } from '../../utils/dom'
 import Vue from 'vue'
 

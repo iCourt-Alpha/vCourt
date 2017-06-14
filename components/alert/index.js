@@ -4,7 +4,7 @@ import Alert from './alert.vue'
 function createAlert (title, ctn) {
   let promise = new Promise((resolve, reject) => {
     let alertEle = document.createElement('div')
-    alertEle.innerHTML = `<Alert title="${title}" :mask-show="maskShow" ctn="${ctn}" @alert-disappear="confirmDisappear"></Alert>`
+    alertEle.innerHTML = `<Alert title="${title}" :confirm="confirmDisappear" :cancel="cancelDisappear" ctn="${ctn}" @alert-disappear="confirmDisappear"></Alert>`
     document.body.appendChild(alertEle)
     return new Vue({
       el: alertEle,
@@ -16,9 +16,10 @@ function createAlert (title, ctn) {
       },
       methods: {
         confirmDisappear: function () {
-          console.log('alertDisappear')
-          this.maskShow = false
           resolve()
+        },
+        cancelDisappear: function () {
+          reject()
         }
       },
       mounted: function () {

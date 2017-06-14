@@ -1,12 +1,13 @@
 <template>
   <transition name="fast-fade" @after-enter="afterEnter">
-    <div class="vc-mask" :class="'vc-mask-'+bkg" v-if="maskShow" @click="maskClick">
+    <div class="vc-mask" :class="'vc-mask-'+bkg" @click="maskClick" v-if="maskShow">
       <slot></slot>
     </div>
   </transition>
 </template>
 
 <script type='text/ecmascript-6'>
+import { dom } from '../../utils/dom'
 export default {
   props: {
     maskShow: {
@@ -25,15 +26,26 @@ export default {
       }
     },
     afterEnter () {
-      console.log('emit after~')
       this.$emit('afterEnter')
     }
   },
+  watch: {
+    maskShow (n, o) {
+      if (typeof n === 'boolean' && typeof o === 'boolean' && n === false) {
+        let that = this
+        setTimeout(function () {
+          that.$destroy()
+        })
+      }
+    }
+  },
   mounted () {
-    document.body.style.overflow = 'hidden'
+    this._curOverflowStyle = dom.getStyle(document.body, 'overflow')
+    dom.setStyle(document.body, 'overflow', 'hidden')
   },
   destroyed () {
-    document.body.style.overflow = 'auto'
+    dom.setStyle(document.body, 'overflow', this._curOverflowStyle)
+    this._curOverflowStyle = null
   }
 }
 </script>

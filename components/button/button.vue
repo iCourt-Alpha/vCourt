@@ -1,5 +1,5 @@
 <template>
-<button class="vc-button" :class="classes" @click="handleClick" :disabled="disable">
+<button :class="classes" @click="handleClick" :disabled="disabled">
   <Icon :type="icon" v-if="icon"></Icon>
   <span>
     <slot></slot>
@@ -9,22 +9,30 @@
 
 <script>
 import Icon from '../icon'
+import { oneOf } from '../../utils/assist'
+
+const _prefix = 'vc-button'
 export default {
-  name: 'button',
   props: {
     type: {
-      type: String,
-      default: 'primary'
+      validator (value) {
+        return oneOf(value, ['default', 'danger', 'text', 'primary'])
+      }
     },
     icon: {
       type: String,
       default: ''
     },
-    large: {
+    size: {
+      validator (value) {
+        return oneOf(value, ['small', 'large'])
+      }
+    },
+    disabled: {
       type: Boolean,
       default: false
     },
-    disable: {
+    long: {
       type: Boolean,
       default: false
     }
@@ -34,7 +42,15 @@ export default {
   },
   computed: {
     classes: function () {
-      return `vc-button-${this.type} ` + (this.large ? 'vc-button-large' : '')
+      return [
+        `${_prefix}`,
+        {
+          [`${_prefix}-${this.type}`]: !!this.type,
+          [`${_prefix}-${this.size}`]: !!this.size,
+          [this.type ? '' :  `${_prefix}-default`]: true,
+          [this.long ? `${_prefix}-long` :  '']: true
+        }
+      ]
     }
   },
   methods: {
@@ -72,7 +88,7 @@ export default {
     transform translate3d(0, 2px, 0)
   &[disabled]
     background #ebebee
-    color #a9a9a9
+    color lightGrayText
     border 1px solid transparent
     cursor not-allowed
     color lightBkg
@@ -80,28 +96,41 @@ export default {
       box-shadow none
     &:active
       transform none
-.vc-button-primary
+.vc-button-default, .vc-button-danger
   background baseColor
   padding 0 16px
   border 1px solid baseColor
   &[disabled]
     background #ebebee
-    color #a9a9a9
-.vc-button-ghost
-  border 1px solid #cfc7c1
+    color lightGrayText
+.vc-button-danger
+  background: errorColor
+.vc-button-primary
+  border 1px solid darkBorder
   color blackText
   background #fff
   padding 0 16px
   &[disabled]
     background #ebebee
-    color #a9a9a9
+    color lightGrayText
 .vc-button-text
-  color #999
+  color blackText
   &:hover
     color baseColor
+    box-shadow: none
   &:active
     color darkBaseColor
-.vc-button-large
+  &[disabled]
+    background none
+    color lightGrayText
+.vc-button-long
   width 100%
   line-height 36px
+.vc-button-large
+  padding: 6px 15px 7px
+  font-size: 14px
+.vc-button-small
+  padding: 0px 6px
+  font-size: 6px
+  line-height: 23px
 </style>

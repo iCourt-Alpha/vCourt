@@ -1,6 +1,6 @@
 <template>
-<div class="iui-toast-c" :class="type">
-  <Icon :type="type" class="type"></Icon>
+<div class="vc-toast-c" :class="type">
+  <Icon :type="iconType" class="type"></Icon>
   <p>{{msg}}</p>
   <a @click="closeToast"><Icon type="close" class="close"></Icon></a>
 </div>
@@ -11,8 +11,8 @@ import Icon from '../icon'
 export default {
   name: 'toast',
   props: {
-    type: String,
     msg: String,
+    type: String,
     duration: {
       type: Number,
       default: 3
@@ -21,11 +21,21 @@ export default {
   components: {
     Icon
   },
+  data () {
+    return {
+      iconType: ''
+    }
+  },
   mounted: function () {
     var that = this
     that._timeout = setTimeout(function () {
       that.$emit('close')
     }, that.duration * 1000)
+    const _iconMap = {
+      'danger': 'warning',
+      'info': 'done'
+    }
+    this.iconType = _iconMap[this.type]
   },
   methods: {
     closeToast: function () {
@@ -46,7 +56,7 @@ export default {
 toastHeight = 48px
 toastWidth = 260px
 
-.iui-toast-c
+.vc-toast-c
   position fixed
   top 90px
   left 50%
@@ -79,6 +89,6 @@ toastWidth = 260px
     height 50px
     overflow hidden
     font-size 14px
-  &.info
+  &.danger
     background errorColor
 </style>
