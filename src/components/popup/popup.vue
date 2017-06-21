@@ -1,8 +1,8 @@
 <template>
 <div class="vc-popup-w" v-clickoutside="handleClose">
-  <span class="vc-popup-trigger" @click="togglePopup" ref="trigger"><slot name="trigger"></slot></span>
+  <span class="vc-popup-trigger" @click="handleClose('useVisible')" ref="trigger"><slot name="trigger"></slot></span>
   <transition name="slide-in-down">
-    <div class="vc-popup" :class="classes" :style="sizeStyle" v-if="visibile">
+    <div class="vc-popup" :class="classes" :style="sizeStyle" v-if="visibile" ref="ctn">
       <div class="vc-popup-c">
         <slot name="content"></slot>
       </div>
@@ -13,7 +13,6 @@
 
 <script>
 import clickoutside from '../../utils/clickoutside'
-
 export default {
   name: 'popup',
   props: {
@@ -21,26 +20,15 @@ export default {
       type: String,
       default: 'white'
     },
+    // 浮窗相对trigger位置
     position: {
       type: String,
       default: 'bottom'
     },
-    size: {
-      type: Object,
-      default () {
-        return {
-          height: 100,
-          width: 100
-        }
-      }
-    },
+    // 自定义X位移
     transformX: {
       type: Number,
       default: 0
-    },
-    visibile: {
-      type: Boolean,
-      default: false
     }
   },
   data: function () {
@@ -48,30 +36,42 @@ export default {
       triggerSize: {
         width: 0,
         height: 0
-      }
+      },
+      visibile: false,
+      size: {}
     }
   },
   computed: {
     sizeStyle: function () {
-      var rect = {
-        height: this.size.height + 'px',
-        width: this.size.width + 'px'
+      let rect = {
+        height: this.size.height,
+        width: this.size.width
       }
-      if (this.position === 'bottom') {
-        rect.marginTop = '10px'
-        rect.marginLeft = (this.triggerSize.width - this.size.width) / 2 + 'px'
-      } else if (this.position === 'top') {
-        rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px'
-        rect.marginLeft = (this.triggerSize.width - this.size.width) / 2 + 'px'
-      } else if (this.position === 'top-right') {
-        rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px'
-        rect.marginLeft = (this.triggerSize.width - this.size.width + this.transformX) + 'px'
-      } else if (this.position === 'top-left') {
-        rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px'
-        rect.marginLeft = (-this.transformX) + 'px'
-      } else if (this.position === 'bottom-right') {
-        rect.marginTop = '10px'
-        rect.marginLeft = (this.triggerSize.width - this.size.width) + 'px'
+      switch (this.position) {
+        case 'bottom':
+          rect.marginTop = '10px'
+          rect.marginLeft = (this.triggerSize.width - this.size.width) / 2 + 'px'
+          break
+        case 'top':
+          rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px'
+          rect.marginLeft = (this.triggerSize.width - this.size.width) / 2 + 'px'
+          break
+        case 'top-right':
+          rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px'
+          rect.marginLeft = (this.triggerSize.width - this.size.width + this.transformX) + 'px'
+          break
+        case 'top-left':
+          rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px'
+          rect.marginLeft = (-this.transformX) + 'px'
+          break
+        case 'bottom-right':
+          rect.marginTop = '10px'
+          rect.marginLeft = (this.triggerSize.width - this.size.width) + 'px'
+          break
+        case 'bottom-left':
+          rect.marginTop = '10px'
+          rect.marginLeft = (this.triggerSize.width - this.size.width) + 'px'
+          break
       }
       return rect
     },
@@ -83,24 +83,37 @@ export default {
     clickoutside
   },
   methods: {
-    handleClose: function (e) {
-      this.$emit('changed', false)
-    },
-    togglePopup: function () {
-      this.$emit('changed', !this.visibile)
+    handleClose: function (handle) {
+      if (handle === 'useVisible') {
+        this.visibile = !this.visibile
+      } else {
+        this.visibile = false
+      }
     }
   },
-  mounted: function () {
-    var that = this
-    var triggerNode = that.$refs.trigger
-    var triggerSize = triggerNode.getBoundingClientRect()
+  mounted () {
+    let that = this
+    let triggerNode = that.$refs.trigger
+    let triggerSize = triggerNode.getBoundingClientRect()
     that.triggerSize.width = triggerSize.width
     that.triggerSize.height = triggerSize.height
+  },
+  updated () {
+    let ctn = this.$refs.ctn
+    if (!ctn) return
+    let ctnBox = this.$refs.ctn.getBoundingClientRect()
+    let width = ctnBox.width
+    let height = ctnBox.height
+    if (width && height) {
+      this.size.width = width
+      this.size.height = height
+    }
   }
 }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+@import "../../stylus/animation.styl"
 .vc-popup-w
   display inline-block
 .vc-popup-trigger
@@ -147,21 +160,28 @@ export default {
 .vc-popup-top-right
   &:after
     top 100%
-    right 46px
+    right 9%
     border-bottom-color transparent
     border-right-color transparent
     border-left-color transparent
 .vc-popup-top-left
   &:after
     top 100%
-    left 46px
+    left 9%
     border-bottom-color transparent
     border-right-color transparent
     border-left-color transparent
 .vc-popup-bottom-right
   &:after
     top -20px
-    right 12px
+    right 5%
+    border-top-color transparent
+    border-right-color transparent
+    border-left-color transparent
+.vc-popup-bottom-left
+  &:after
+    top -20px
+    left 9%
     border-top-color transparent
     border-right-color transparent
     border-left-color transparent
