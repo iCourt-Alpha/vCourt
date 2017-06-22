@@ -9229,9 +9229,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_clickoutside__ = __webpack_require__(74);
 
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'popup',
   props: {
     type: {
       type: String,
@@ -9246,7 +9244,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     transformX: {
       type: Number,
       default: 0
-    }
+    },
+
+    visible: false
   },
   data: function data() {
     return {
@@ -9255,43 +9255,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         height: 0
       },
       visibile: false,
-      size: {}
+      size: {},
+      boxSize: {}
     };
   },
   computed: {
-    sizeStyle: function sizeStyle() {
-      var rect = {
-        height: this.size.height,
-        width: this.size.width
-      };
-      switch (this.position) {
-        case 'bottom':
-          rect.marginTop = '10px';
-          rect.marginLeft = (this.triggerSize.width - this.size.width) / 2 + 'px';
-          break;
-        case 'top':
-          rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px';
-          rect.marginLeft = (this.triggerSize.width - this.size.width) / 2 + 'px';
-          break;
-        case 'top-right':
-          rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px';
-          rect.marginLeft = this.triggerSize.width - this.size.width + this.transformX + 'px';
-          break;
-        case 'top-left':
-          rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px';
-          rect.marginLeft = -this.transformX + 'px';
-          break;
-        case 'bottom-right':
-          rect.marginTop = '10px';
-          rect.marginLeft = this.triggerSize.width - this.size.width + 'px';
-          break;
-        case 'bottom-left':
-          rect.marginTop = '10px';
-          rect.marginLeft = this.triggerSize.width - this.size.width + 'px';
-          break;
-      }
-      return rect;
-    },
     classes: function classes() {
       return 'vc-popup-' + this.type + ' vc-popup-' + this.position;
     }
@@ -9300,12 +9268,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     clickoutside: __WEBPACK_IMPORTED_MODULE_0__utils_clickoutside__["a" /* default */]
   },
   methods: {
-    handleClose: function handleClose(handle) {
-      if (handle === 'useVisible') {
-        this.visibile = !this.visibile;
-      } else {
-        this.visibile = false;
+    handleClose: function handleClose(where) {
+      this.$emit('popupClick', where);
+    },
+    updateBoxSize: function updateBoxSize() {
+      var rect = {
+        height: this.size.height,
+        width: this.size.width
+      };
+      switch (this.position) {
+        case 'bottom':
+          rect.marginTop = '4px';
+          rect.marginLeft = (this.triggerSize.width - rect.width) / 2 + 'px';
+          break;
+        case 'top':
+          rect.marginTop = -(rect.height + 12 + this.triggerSize.height) + 'px';
+          rect.marginLeft = (this.triggerSize.width - rect.width) / 2 + 'px';
+          break;
+        case 'top-right':
+          rect.marginTop = -(rect.height + 12 + this.triggerSize.height) + 'px';
+          rect.marginLeft = this.triggerSize.width - rect.width + this.transformX + 'px';
+          break;
+        case 'top-left':
+          rect.marginTop = -(rect.height + 12 + this.triggerSize.height) + 'px';
+          rect.marginLeft = -this.transformX + 'px';
+          break;
+        case 'bottom-right':
+          rect.marginTop = '4px';
+          rect.marginLeft = this.triggerSize.width - rect.width + 'px';
+          break;
+        case 'bottom-left':
+          rect.marginTop = '4px';
+          rect.marginLeft = this.triggerSize.width - rect.width + 'px';
+          break;
       }
+      this.boxSize = rect;
     }
   },
   mounted: function mounted() {
@@ -9321,9 +9318,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     var ctnBox = this.$refs.ctn.getBoundingClientRect();
     var width = ctnBox.width;
     var height = ctnBox.height;
-    if (width && height) {
+    if (width && height && (this.size.width !== width || this.size.height !== height)) {
       this.size.width = width;
       this.size.height = height;
+      this.updateBoxSize();
     }
   }
 });
@@ -12260,23 +12258,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "handleClose"
     }],
     staticClass: "vc-popup-w"
-  }, [_c('span', {
+  }, [_c('div', {
     ref: "trigger",
     staticClass: "vc-popup-trigger",
     on: {
       "click": function($event) {
-        _vm.handleClose('useVisible')
+        _vm.handleClose('trigger')
       }
     }
   }, [_vm._t("trigger")], 2), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "slide-in-down"
     }
-  }, [(_vm.visibile) ? _c('div', {
+  }, [(_vm.visible) ? _c('div', {
     ref: "ctn",
     staticClass: "vc-popup",
     class: _vm.classes,
-    style: (_vm.sizeStyle)
+    style: (_vm.boxSize)
   }, [_c('div', {
     staticClass: "vc-popup-c"
   }, [_vm._t("content")], 2)]) : _vm._e()])], 1)
