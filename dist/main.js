@@ -9230,7 +9230,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'popup',
   props: {
@@ -9238,26 +9237,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       type: String,
       default: 'white'
     },
+
     position: {
       type: String,
       default: 'bottom'
     },
-    size: {
-      type: Object,
-      default: function _default() {
-        return {
-          height: 100,
-          width: 100
-        };
-      }
-    },
+
     transformX: {
       type: Number,
       default: 0
-    },
-    visibile: {
-      type: Boolean,
-      default: false
     }
   },
   data: function data() {
@@ -9265,30 +9253,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       triggerSize: {
         width: 0,
         height: 0
-      }
+      },
+      visibile: false,
+      size: {}
     };
   },
   computed: {
     sizeStyle: function sizeStyle() {
       var rect = {
-        height: this.size.height + 'px',
-        width: this.size.width + 'px'
+        height: this.size.height,
+        width: this.size.width
       };
-      if (this.position === 'bottom') {
-        rect.marginTop = '10px';
-        rect.marginLeft = (this.triggerSize.width - this.size.width) / 2 + 'px';
-      } else if (this.position === 'top') {
-        rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px';
-        rect.marginLeft = (this.triggerSize.width - this.size.width) / 2 + 'px';
-      } else if (this.position === 'top-right') {
-        rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px';
-        rect.marginLeft = this.triggerSize.width - this.size.width + this.transformX + 'px';
-      } else if (this.position === 'top-left') {
-        rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px';
-        rect.marginLeft = -this.transformX + 'px';
-      } else if (this.position === 'bottom-right') {
-        rect.marginTop = '10px';
-        rect.marginLeft = this.triggerSize.width - this.size.width + 'px';
+      switch (this.position) {
+        case 'bottom':
+          rect.marginTop = '10px';
+          rect.marginLeft = (this.triggerSize.width - this.size.width) / 2 + 'px';
+          break;
+        case 'top':
+          rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px';
+          rect.marginLeft = (this.triggerSize.width - this.size.width) / 2 + 'px';
+          break;
+        case 'top-right':
+          rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px';
+          rect.marginLeft = this.triggerSize.width - this.size.width + this.transformX + 'px';
+          break;
+        case 'top-left':
+          rect.marginTop = -(this.size.height + 12 + this.triggerSize.height) + 'px';
+          rect.marginLeft = -this.transformX + 'px';
+          break;
+        case 'bottom-right':
+          rect.marginTop = '10px';
+          rect.marginLeft = this.triggerSize.width - this.size.width + 'px';
+          break;
+        case 'bottom-left':
+          rect.marginTop = '10px';
+          rect.marginLeft = this.triggerSize.width - this.size.width + 'px';
+          break;
       }
       return rect;
     },
@@ -9300,11 +9300,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     clickoutside: __WEBPACK_IMPORTED_MODULE_0__utils_clickoutside__["a" /* default */]
   },
   methods: {
-    handleClose: function handleClose(e) {
-      this.$emit('changed', false);
-    },
-    togglePopup: function togglePopup() {
-      this.$emit('changed', !this.visibile);
+    handleClose: function handleClose(handle) {
+      if (handle === 'useVisible') {
+        this.visibile = !this.visibile;
+      } else {
+        this.visibile = false;
+      }
     }
   },
   mounted: function mounted() {
@@ -9313,6 +9314,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     var triggerSize = triggerNode.getBoundingClientRect();
     that.triggerSize.width = triggerSize.width;
     that.triggerSize.height = triggerSize.height;
+  },
+  updated: function updated() {
+    var ctn = this.$refs.ctn;
+    if (!ctn) return;
+    var ctnBox = this.$refs.ctn.getBoundingClientRect();
+    var width = ctnBox.width;
+    var height = ctnBox.height;
+    if (width && height) {
+      this.size.width = width;
+      this.size.height = height;
+    }
   }
 });
 
@@ -10886,7 +10898,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.vc-line-through-line {\n  height: 1px;\n  background: #f1f1f1;\n  position: relative;\n}\n.vc-line-through-c {\n  position: relative;\n}\n", ""]);
+exports.push([module.i, "\n.bubble-enter-active {\n  -webkit-animation-duration: 0.5s;\n          animation-duration: 0.5s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: swing;\n          animation-name: swing;\n  -webkit-transform-origin: top center;\n          transform-origin: top center;\n}\n.bounceIn-enter-active {\n  -webkit-animation-duration: 0.4s;\n          animation-duration: 0.4s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: bounceIn;\n          animation-name: bounceIn;\n  -webkit-transform-origin: center bottom;\n          transform-origin: center bottom;\n}\n.fadeInRight-enter-active {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: fadeInRight;\n          animation-name: fadeInRight;\n}\n.fadeInRight-leave-active {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: fadeOutLeft;\n          animation-name: fadeOutLeft;\n}\n.slide-in-down-enter-active,\n.slide-in-down-leave-active {\n  transition: opacity 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;\n  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n}\n.slide-in-down-enter,\n.slide-in-down-leave-active {\n  opacity: 0;\n  -webkit-transform: translate3d(0, 10%, 0);\n          transform: translate3d(0, 10%, 0);\n}\n.slide-in-right-enter-active,\n.slide-in-right-leave-active {\n  transition: all 0.2s linear;\n}\n.slide-in-right-enter,\n.slide-in-right-leave-active {\n  -webkit-transform: translate3d(100%, 0, 0);\n          transform: translate3d(100%, 0, 0);\n  opacity: 0;\n}\n.slide-in-up-enter-active,\n.slide-in-up-leave-active {\n  transition: -webkit-transform 0.2s ease-in-out;\n  transition: transform 0.2s ease-in-out;\n  transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n}\n.slide-in-up-enter,\n.slide-in-up-leave-active {\n  -webkit-transform: translate3d(0, -20%, 0);\n          transform: translate3d(0, -20%, 0);\n}\n.fast-fade-enter,\n.fast-fade-leave-active {\n  opacity: 0;\n}\n.fast-fade-enter-active,\n.fast-fade-leave-active {\n  transition: opacity 0.15s ease-in;\n}\n.starStatusSwitch-enter-active {\n  -webkit-animation-name: zoomInBig;\n          animation-name: zoomInBig;\n  -webkit-animation-duration: 0.5s;\n          animation-duration: 0.5s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n}\n.starStatusSwitch-leave-active {\n  -webkit-animation-name: fadeOutDown;\n          animation-name: fadeOutDown;\n  -webkit-animation-duration: 0.5s;\n          animation-duration: 0.5s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n}\n@-webkit-keyframes swing {\n20% {\n    -webkit-transform: rotate3d(0, 0, 1, 15deg);\n    transform: rotate3d(0, 0, 1, 15deg);\n}\n40% {\n    -webkit-transform: rotate3d(0, 0, 1, -10deg);\n    transform: rotate3d(0, 0, 1, -10deg);\n}\n60% {\n    -webkit-transform: rotate3d(0, 0, 1, 5deg);\n    transform: rotate3d(0, 0, 1, 5deg);\n}\n80% {\n    -webkit-transform: rotate3d(0, 0, 1, -5deg);\n    transform: rotate3d(0, 0, 1, -5deg);\n}\nto {\n    -webkit-transform: rotate3d(0, 0, 1, 0deg);\n    transform: rotate3d(0, 0, 1, 0deg);\n}\n}\n@keyframes swing {\n20% {\n    -webkit-transform: rotate3d(0, 0, 1, 15deg);\n    transform: rotate3d(0, 0, 1, 15deg);\n}\n40% {\n    -webkit-transform: rotate3d(0, 0, 1, -10deg);\n    transform: rotate3d(0, 0, 1, -10deg);\n}\n60% {\n    -webkit-transform: rotate3d(0, 0, 1, 5deg);\n    transform: rotate3d(0, 0, 1, 5deg);\n}\n80% {\n    -webkit-transform: rotate3d(0, 0, 1, -5deg);\n    transform: rotate3d(0, 0, 1, -5deg);\n}\nto {\n    -webkit-transform: rotate3d(0, 0, 1, 0deg);\n    transform: rotate3d(0, 0, 1, 0deg);\n}\n}\n@-webkit-keyframes bounceIn {\nfrom, 20%, 40%, 60%, 80%, to {\n    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n}\n0% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\n            transform: scale3d(0.3, 0.3, 0.3);\n}\n30% {\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\n            transform: scale3d(1.1, 1.1, 1.1);\n}\n60% {\n    opacity: 1;\n    -webkit-transform: scale3d(0.97, 0.97, 0.97);\n            transform: scale3d(0.97, 0.97, 0.97);\n}\nto {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n}\n}\n@keyframes bounceIn {\nfrom, 20%, 40%, 60%, 80%, to {\n    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n}\n0% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\n            transform: scale3d(0.3, 0.3, 0.3);\n}\n30% {\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\n            transform: scale3d(1.1, 1.1, 1.1);\n}\n60% {\n    opacity: 1;\n    -webkit-transform: scale3d(0.97, 0.97, 0.97);\n            transform: scale3d(0.97, 0.97, 0.97);\n}\nto {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n}\n}\n@-webkit-keyframes msgBlink {\nfrom {\n    background: #fff;\n}\n45% {\n    background: #fdba78;\n}\nto {\n    opacity: 1;\n    background: #fff;\n}\n}\n@keyframes msgBlink {\nfrom {\n    background: #fff;\n}\n45% {\n    background: #fdba78;\n}\nto {\n    opacity: 1;\n    background: #fff;\n}\n}\n@-webkit-keyframes fadeInRight {\nfrom {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\nto {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\n}\n@keyframes fadeInRight {\nfrom {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\nto {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\n}\n@-webkit-keyframes fadeOutLeft {\nfrom {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\n}\n@keyframes fadeOutLeft {\nfrom {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\n}\n@-webkit-keyframes rotate {\n0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n}\n50% {\n    -webkit-transform: rotate(180deg);\n    transform: rotate(180deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n}\n}\n@keyframes rotate {\n0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n}\n50% {\n    -webkit-transform: rotate(180deg);\n    transform: rotate(180deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n}\n}\n@-webkit-keyframes slidetounlock {\n0% {\n    left: 0;\n}\n100% {\n    left: 100%;\n}\n}\n@keyframes slidetounlock {\n0% {\n    left: 0;\n}\n100% {\n    left: 100%;\n}\n}\n@-webkit-keyframes zoomInBig {\nfrom {\n    opacity: 1;\n}\n100% {\n    opacity: 0;\n    -webkit-transform: scale(3.3, 3.3);\n            transform: scale(3.3, 3.3);\n}\n}\n@keyframes zoomInBig {\nfrom {\n    opacity: 1;\n}\n100% {\n    opacity: 0;\n    -webkit-transform: scale(3.3, 3.3);\n            transform: scale(3.3, 3.3);\n}\n}\n@-webkit-keyframes fadeOutDown {\nfrom {\n    opacity: 1;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(0, 100%, 0);\n            transform: translate3d(0, 100%, 0);\n}\n}\n@keyframes fadeOutDown {\nfrom {\n    opacity: 1;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(0, 100%, 0);\n            transform: translate3d(0, 100%, 0);\n}\n}\n.vc-button {\n  color: #fff;\n  font-size: 13px;\n  text-align: center;\n  line-height: 30px;\n  border: none;\n  outline: none;\n  cursor: pointer;\n  border-radius: 20px;\n  background: transparent;\n  transition: all 0.15s ease;\n  box-sizing: border-box;\n}\n.vc-button a {\n  color: #fff;\n}\n.vc-button:hover {\n  box-shadow: 0 2px 6px rgba(0,0,0,0.3);\n}\n.vc-button .vc-icon {\n  position: relative;\n  top: 1px;\n}\n.vc-button:active {\n  -webkit-transform: translate3d(0, 2px, 0);\n          transform: translate3d(0, 2px, 0);\n}\n.vc-button[disabled] {\n  background: #ebebee;\n  color: #a9a9a9;\n  border: 1px solid transparent;\n  cursor: not-allowed;\n  color: #f8f8f9;\n}\n.vc-button[disabled]:hover {\n  box-shadow: none;\n}\n.vc-button[disabled]:active {\n  -webkit-transform: none;\n          transform: none;\n}\n.vc-button-default,\n.vc-button-danger {\n  background: #fa8919;\n  padding: 0 16px;\n  border: 1px solid #fa8919;\n}\n.vc-button-default[disabled],\n.vc-button-danger[disabled] {\n  background: #ebebee;\n  color: #a9a9a9;\n}\n.vc-button-danger {\n  background: #f72b44;\n}\n.vc-button-primary {\n  border: 1px solid #cfc7c1;\n  color: #4a4a4a;\n  background: #fff;\n  padding: 0 16px;\n}\n.vc-button-primary[disabled] {\n  background: #ebebee;\n  color: #a9a9a9;\n}\n.vc-button-text {\n  color: #4a4a4a;\n}\n.vc-button-text:hover {\n  color: #fa8919;\n  box-shadow: none;\n}\n.vc-button-text:active {\n  color: #ed6c00;\n}\n.vc-button-text[disabled] {\n  background: none;\n  color: #a9a9a9;\n}\n.vc-button-long {\n  width: 100%;\n  line-height: 36px;\n}\n.vc-button-large {\n  padding: 6px 15px 7px;\n  font-size: 14px;\n}\n.vc-button-small {\n  padding: 0px 6px;\n  font-size: 6px;\n  line-height: 23px;\n}\n", ""]);
 
 // exports
 
@@ -10900,7 +10912,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n[class*=vc-col] {\n  float: left;\n  min-height: 1px;\n  padding: 12px;\n}\n.vc-col-span-12 {\n  width: 100%;\n}\n.vc-col-span-11 {\n  width: 91.66666667%;\n}\n.vc-col-span-10 {\n  width: 83.33333333%;\n}\n.vc-col-span-9 {\n  width: 75%;\n}\n.vc-col-span-8 {\n  width: 66.66666667%;\n}\n.vc-col-span-7 {\n  width: 58.33333333%;\n}\n.vc-col-span-6 {\n  width: 50%;\n}\n.vc-col-span-5 {\n  width: 41.66666667%;\n}\n.vc-col-span-4 {\n  width: 33.33333333%;\n}\n.vc-col-span-3 {\n  width: 25%;\n}\n.vc-col-span-2 {\n  width: 16.66666667%;\n}\n.vc-col-span-1 {\n  width: 8.33333333%;\n}\n", ""]);
+exports.push([module.i, "\n.vc-line-through-line {\n  height: 1px;\n  background: #f1f1f1;\n  position: relative;\n}\n.vc-line-through-c {\n  position: relative;\n}\n", ""]);
 
 // exports
 
@@ -10942,7 +10954,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.bubble-enter-active {\n  -webkit-animation-duration: 0.5s;\n          animation-duration: 0.5s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: swing;\n          animation-name: swing;\n  -webkit-transform-origin: top center;\n          transform-origin: top center;\n}\n.bounceIn-enter-active {\n  -webkit-animation-duration: 0.4s;\n          animation-duration: 0.4s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: bounceIn;\n          animation-name: bounceIn;\n  -webkit-transform-origin: center bottom;\n          transform-origin: center bottom;\n}\n.fadeInRight-enter-active {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: fadeInRight;\n          animation-name: fadeInRight;\n}\n.fadeInRight-leave-active {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: fadeOutLeft;\n          animation-name: fadeOutLeft;\n}\n.slide-in-down-enter-active,\n.slide-in-down-leave-active {\n  transition: opacity 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;\n  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n}\n.slide-in-down-enter,\n.slide-in-down-leave-active {\n  opacity: 0;\n  -webkit-transform: translate3d(0, 10%, 0);\n          transform: translate3d(0, 10%, 0);\n}\n.slide-in-right-enter-active,\n.slide-in-right-leave-active {\n  transition: all 0.2s linear;\n}\n.slide-in-right-enter,\n.slide-in-right-leave-active {\n  -webkit-transform: translate3d(100%, 0, 0);\n          transform: translate3d(100%, 0, 0);\n  opacity: 0;\n}\n.slide-in-up-enter-active,\n.slide-in-up-leave-active {\n  transition: -webkit-transform 0.2s ease-in-out;\n  transition: transform 0.2s ease-in-out;\n  transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n}\n.slide-in-up-enter,\n.slide-in-up-leave-active {\n  -webkit-transform: translate3d(0, -20%, 0);\n          transform: translate3d(0, -20%, 0);\n}\n.fast-fade-enter,\n.fast-fade-leave-active {\n  opacity: 0;\n}\n.fast-fade-enter-active,\n.fast-fade-leave-active {\n  transition: opacity 0.15s ease-in;\n}\n.starStatusSwitch-enter-active {\n  -webkit-animation-name: zoomInBig;\n          animation-name: zoomInBig;\n  -webkit-animation-duration: 0.5s;\n          animation-duration: 0.5s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n}\n.starStatusSwitch-leave-active {\n  -webkit-animation-name: fadeOutDown;\n          animation-name: fadeOutDown;\n  -webkit-animation-duration: 0.5s;\n          animation-duration: 0.5s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n}\n@-webkit-keyframes swing {\n20% {\n    -webkit-transform: rotate3d(0, 0, 1, 15deg);\n    transform: rotate3d(0, 0, 1, 15deg);\n}\n40% {\n    -webkit-transform: rotate3d(0, 0, 1, -10deg);\n    transform: rotate3d(0, 0, 1, -10deg);\n}\n60% {\n    -webkit-transform: rotate3d(0, 0, 1, 5deg);\n    transform: rotate3d(0, 0, 1, 5deg);\n}\n80% {\n    -webkit-transform: rotate3d(0, 0, 1, -5deg);\n    transform: rotate3d(0, 0, 1, -5deg);\n}\nto {\n    -webkit-transform: rotate3d(0, 0, 1, 0deg);\n    transform: rotate3d(0, 0, 1, 0deg);\n}\n}\n@keyframes swing {\n20% {\n    -webkit-transform: rotate3d(0, 0, 1, 15deg);\n    transform: rotate3d(0, 0, 1, 15deg);\n}\n40% {\n    -webkit-transform: rotate3d(0, 0, 1, -10deg);\n    transform: rotate3d(0, 0, 1, -10deg);\n}\n60% {\n    -webkit-transform: rotate3d(0, 0, 1, 5deg);\n    transform: rotate3d(0, 0, 1, 5deg);\n}\n80% {\n    -webkit-transform: rotate3d(0, 0, 1, -5deg);\n    transform: rotate3d(0, 0, 1, -5deg);\n}\nto {\n    -webkit-transform: rotate3d(0, 0, 1, 0deg);\n    transform: rotate3d(0, 0, 1, 0deg);\n}\n}\n@-webkit-keyframes bounceIn {\nfrom, 20%, 40%, 60%, 80%, to {\n    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n}\n0% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\n            transform: scale3d(0.3, 0.3, 0.3);\n}\n30% {\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\n            transform: scale3d(1.1, 1.1, 1.1);\n}\n60% {\n    opacity: 1;\n    -webkit-transform: scale3d(0.97, 0.97, 0.97);\n            transform: scale3d(0.97, 0.97, 0.97);\n}\nto {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n}\n}\n@keyframes bounceIn {\nfrom, 20%, 40%, 60%, 80%, to {\n    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n}\n0% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\n            transform: scale3d(0.3, 0.3, 0.3);\n}\n30% {\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\n            transform: scale3d(1.1, 1.1, 1.1);\n}\n60% {\n    opacity: 1;\n    -webkit-transform: scale3d(0.97, 0.97, 0.97);\n            transform: scale3d(0.97, 0.97, 0.97);\n}\nto {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n}\n}\n@-webkit-keyframes msgBlink {\nfrom {\n    background: #fff;\n}\n45% {\n    background: #fdba78;\n}\nto {\n    opacity: 1;\n    background: #fff;\n}\n}\n@keyframes msgBlink {\nfrom {\n    background: #fff;\n}\n45% {\n    background: #fdba78;\n}\nto {\n    opacity: 1;\n    background: #fff;\n}\n}\n@-webkit-keyframes fadeInRight {\nfrom {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\nto {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\n}\n@keyframes fadeInRight {\nfrom {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\nto {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\n}\n@-webkit-keyframes fadeOutLeft {\nfrom {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\n}\n@keyframes fadeOutLeft {\nfrom {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\n}\n@-webkit-keyframes rotate {\n0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n}\n50% {\n    -webkit-transform: rotate(180deg);\n    transform: rotate(180deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n}\n}\n@keyframes rotate {\n0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n}\n50% {\n    -webkit-transform: rotate(180deg);\n    transform: rotate(180deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n}\n}\n@-webkit-keyframes slidetounlock {\n0% {\n    left: 0;\n}\n100% {\n    left: 100%;\n}\n}\n@keyframes slidetounlock {\n0% {\n    left: 0;\n}\n100% {\n    left: 100%;\n}\n}\n@-webkit-keyframes zoomInBig {\nfrom {\n    opacity: 1;\n}\n100% {\n    opacity: 0;\n    -webkit-transform: scale(3.3, 3.3);\n            transform: scale(3.3, 3.3);\n}\n}\n@keyframes zoomInBig {\nfrom {\n    opacity: 1;\n}\n100% {\n    opacity: 0;\n    -webkit-transform: scale(3.3, 3.3);\n            transform: scale(3.3, 3.3);\n}\n}\n@-webkit-keyframes fadeOutDown {\nfrom {\n    opacity: 1;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(0, 100%, 0);\n            transform: translate3d(0, 100%, 0);\n}\n}\n@keyframes fadeOutDown {\nfrom {\n    opacity: 1;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(0, 100%, 0);\n            transform: translate3d(0, 100%, 0);\n}\n}\n.vc-button {\n  color: #fff;\n  font-size: 13px;\n  text-align: center;\n  line-height: 30px;\n  border: none;\n  outline: none;\n  cursor: pointer;\n  border-radius: 20px;\n  background: transparent;\n  transition: all 0.15s ease;\n  box-sizing: border-box;\n}\n.vc-button a {\n  color: #fff;\n}\n.vc-button:hover {\n  box-shadow: 0 2px 6px rgba(0,0,0,0.3);\n}\n.vc-button .vc-icon {\n  position: relative;\n  top: 1px;\n}\n.vc-button:active {\n  -webkit-transform: translate3d(0, 2px, 0);\n          transform: translate3d(0, 2px, 0);\n}\n.vc-button[disabled] {\n  background: #ebebee;\n  color: #a9a9a9;\n  border: 1px solid transparent;\n  cursor: not-allowed;\n  color: #f8f8f9;\n}\n.vc-button[disabled]:hover {\n  box-shadow: none;\n}\n.vc-button[disabled]:active {\n  -webkit-transform: none;\n          transform: none;\n}\n.vc-button-default,\n.vc-button-danger {\n  background: #fa8919;\n  padding: 0 16px;\n  border: 1px solid #fa8919;\n}\n.vc-button-default[disabled],\n.vc-button-danger[disabled] {\n  background: #ebebee;\n  color: #a9a9a9;\n}\n.vc-button-danger {\n  background: #f72b44;\n}\n.vc-button-primary {\n  border: 1px solid #cfc7c1;\n  color: #4a4a4a;\n  background: #fff;\n  padding: 0 16px;\n}\n.vc-button-primary[disabled] {\n  background: #ebebee;\n  color: #a9a9a9;\n}\n.vc-button-text {\n  color: #4a4a4a;\n}\n.vc-button-text:hover {\n  color: #fa8919;\n  box-shadow: none;\n}\n.vc-button-text:active {\n  color: #ed6c00;\n}\n.vc-button-text[disabled] {\n  background: none;\n  color: #a9a9a9;\n}\n.vc-button-long {\n  width: 100%;\n  line-height: 36px;\n}\n.vc-button-large {\n  padding: 6px 15px 7px;\n  font-size: 14px;\n}\n.vc-button-small {\n  padding: 0px 6px;\n  font-size: 6px;\n  line-height: 23px;\n}\n", ""]);
+exports.push([module.i, "\n.bubble-enter-active {\n  -webkit-animation-duration: 0.5s;\n          animation-duration: 0.5s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: swing;\n          animation-name: swing;\n  -webkit-transform-origin: top center;\n          transform-origin: top center;\n}\n.bounceIn-enter-active {\n  -webkit-animation-duration: 0.4s;\n          animation-duration: 0.4s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: bounceIn;\n          animation-name: bounceIn;\n  -webkit-transform-origin: center bottom;\n          transform-origin: center bottom;\n}\n.fadeInRight-enter-active {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: fadeInRight;\n          animation-name: fadeInRight;\n}\n.fadeInRight-leave-active {\n  -webkit-animation-duration: 0.3s;\n          animation-duration: 0.3s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n  -webkit-animation-name: fadeOutLeft;\n          animation-name: fadeOutLeft;\n}\n.slide-in-down-enter-active,\n.slide-in-down-leave-active {\n  transition: opacity 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;\n  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n}\n.slide-in-down-enter,\n.slide-in-down-leave-active {\n  opacity: 0;\n  -webkit-transform: translate3d(0, 10%, 0);\n          transform: translate3d(0, 10%, 0);\n}\n.slide-in-right-enter-active,\n.slide-in-right-leave-active {\n  transition: all 0.2s linear;\n}\n.slide-in-right-enter,\n.slide-in-right-leave-active {\n  -webkit-transform: translate3d(100%, 0, 0);\n          transform: translate3d(100%, 0, 0);\n  opacity: 0;\n}\n.slide-in-up-enter-active,\n.slide-in-up-leave-active {\n  transition: -webkit-transform 0.2s ease-in-out;\n  transition: transform 0.2s ease-in-out;\n  transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n}\n.slide-in-up-enter,\n.slide-in-up-leave-active {\n  -webkit-transform: translate3d(0, -20%, 0);\n          transform: translate3d(0, -20%, 0);\n}\n.fast-fade-enter,\n.fast-fade-leave-active {\n  opacity: 0;\n}\n.fast-fade-enter-active,\n.fast-fade-leave-active {\n  transition: opacity 0.15s ease-in;\n}\n.starStatusSwitch-enter-active {\n  -webkit-animation-name: zoomInBig;\n          animation-name: zoomInBig;\n  -webkit-animation-duration: 0.5s;\n          animation-duration: 0.5s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n}\n.starStatusSwitch-leave-active {\n  -webkit-animation-name: fadeOutDown;\n          animation-name: fadeOutDown;\n  -webkit-animation-duration: 0.5s;\n          animation-duration: 0.5s;\n  -webkit-animation-fill-mode: both;\n          animation-fill-mode: both;\n}\n@-webkit-keyframes swing {\n20% {\n    -webkit-transform: rotate3d(0, 0, 1, 15deg);\n    transform: rotate3d(0, 0, 1, 15deg);\n}\n40% {\n    -webkit-transform: rotate3d(0, 0, 1, -10deg);\n    transform: rotate3d(0, 0, 1, -10deg);\n}\n60% {\n    -webkit-transform: rotate3d(0, 0, 1, 5deg);\n    transform: rotate3d(0, 0, 1, 5deg);\n}\n80% {\n    -webkit-transform: rotate3d(0, 0, 1, -5deg);\n    transform: rotate3d(0, 0, 1, -5deg);\n}\nto {\n    -webkit-transform: rotate3d(0, 0, 1, 0deg);\n    transform: rotate3d(0, 0, 1, 0deg);\n}\n}\n@keyframes swing {\n20% {\n    -webkit-transform: rotate3d(0, 0, 1, 15deg);\n    transform: rotate3d(0, 0, 1, 15deg);\n}\n40% {\n    -webkit-transform: rotate3d(0, 0, 1, -10deg);\n    transform: rotate3d(0, 0, 1, -10deg);\n}\n60% {\n    -webkit-transform: rotate3d(0, 0, 1, 5deg);\n    transform: rotate3d(0, 0, 1, 5deg);\n}\n80% {\n    -webkit-transform: rotate3d(0, 0, 1, -5deg);\n    transform: rotate3d(0, 0, 1, -5deg);\n}\nto {\n    -webkit-transform: rotate3d(0, 0, 1, 0deg);\n    transform: rotate3d(0, 0, 1, 0deg);\n}\n}\n@-webkit-keyframes bounceIn {\nfrom, 20%, 40%, 60%, 80%, to {\n    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n}\n0% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\n            transform: scale3d(0.3, 0.3, 0.3);\n}\n30% {\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\n            transform: scale3d(1.1, 1.1, 1.1);\n}\n60% {\n    opacity: 1;\n    -webkit-transform: scale3d(0.97, 0.97, 0.97);\n            transform: scale3d(0.97, 0.97, 0.97);\n}\nto {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n}\n}\n@keyframes bounceIn {\nfrom, 20%, 40%, 60%, 80%, to {\n    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\n}\n0% {\n    opacity: 0;\n    -webkit-transform: scale3d(0.3, 0.3, 0.3);\n            transform: scale3d(0.3, 0.3, 0.3);\n}\n30% {\n    -webkit-transform: scale3d(1.1, 1.1, 1.1);\n            transform: scale3d(1.1, 1.1, 1.1);\n}\n60% {\n    opacity: 1;\n    -webkit-transform: scale3d(0.97, 0.97, 0.97);\n            transform: scale3d(0.97, 0.97, 0.97);\n}\nto {\n    opacity: 1;\n    -webkit-transform: scale3d(1, 1, 1);\n            transform: scale3d(1, 1, 1);\n}\n}\n@-webkit-keyframes msgBlink {\nfrom {\n    background: #fff;\n}\n45% {\n    background: #fdba78;\n}\nto {\n    opacity: 1;\n    background: #fff;\n}\n}\n@keyframes msgBlink {\nfrom {\n    background: #fff;\n}\n45% {\n    background: #fdba78;\n}\nto {\n    opacity: 1;\n    background: #fff;\n}\n}\n@-webkit-keyframes fadeInRight {\nfrom {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\nto {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\n}\n@keyframes fadeInRight {\nfrom {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\nto {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\n}\n@-webkit-keyframes fadeOutLeft {\nfrom {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\n}\n@keyframes fadeOutLeft {\nfrom {\n    opacity: 1;\n    -webkit-transform: none;\n            transform: none;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(100%, 0, 0);\n            transform: translate3d(100%, 0, 0);\n}\n}\n@-webkit-keyframes rotate {\n0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n}\n50% {\n    -webkit-transform: rotate(180deg);\n    transform: rotate(180deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n}\n}\n@keyframes rotate {\n0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n}\n50% {\n    -webkit-transform: rotate(180deg);\n    transform: rotate(180deg);\n}\n100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg);\n}\n}\n@-webkit-keyframes slidetounlock {\n0% {\n    left: 0;\n}\n100% {\n    left: 100%;\n}\n}\n@keyframes slidetounlock {\n0% {\n    left: 0;\n}\n100% {\n    left: 100%;\n}\n}\n@-webkit-keyframes zoomInBig {\nfrom {\n    opacity: 1;\n}\n100% {\n    opacity: 0;\n    -webkit-transform: scale(3.3, 3.3);\n            transform: scale(3.3, 3.3);\n}\n}\n@keyframes zoomInBig {\nfrom {\n    opacity: 1;\n}\n100% {\n    opacity: 0;\n    -webkit-transform: scale(3.3, 3.3);\n            transform: scale(3.3, 3.3);\n}\n}\n@-webkit-keyframes fadeOutDown {\nfrom {\n    opacity: 1;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(0, 100%, 0);\n            transform: translate3d(0, 100%, 0);\n}\n}\n@keyframes fadeOutDown {\nfrom {\n    opacity: 1;\n}\nto {\n    opacity: 0;\n    -webkit-transform: translate3d(0, 100%, 0);\n            transform: translate3d(0, 100%, 0);\n}\n}\n.vc-popup-w {\n  display: inline-block;\n}\n.vc-popup-trigger {\n  display: inline-block;\n}\n.vc-popup {\n  position: absolute;\n  border-radius: 8px;\n  box-shadow: 0 4px 9px 0 rgba(0,0,0,0.3);\n  z-index: 10;\n}\n.vc-popup:after {\n  position: absolute;\n  display: block;\n  content: \"\";\n  pointer-events: none;\n}\n.vc-popup-c {\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n}\n.vc-popup-white {\n  background: #fff;\n}\n.vc-popup-white:after {\n  border: solid 10px #fff;\n}\n.vc-popup-black {\n  background: #3d3d3d;\n}\n.vc-popup-black:after {\n  border: solid 10px #3d3d3d;\n}\n.vc-popup-bottom {\n  box-shadow: 0 4px 9px 0 rgba(0,0,0,0.3);\n}\n.vc-popup-bottom:after {\n  top: -20px;\n  left: 50%;\n  margin-left: -10px;\n  border-top-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n.vc-popup-top:after {\n  top: 100%;\n  left: 50%;\n  margin-left: -10px;\n  border-bottom-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n.vc-popup-top-right:after {\n  top: 100%;\n  right: 9%;\n  border-bottom-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n.vc-popup-top-left:after {\n  top: 100%;\n  left: 9%;\n  border-bottom-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n.vc-popup-bottom-right:after {\n  top: -20px;\n  right: 5%;\n  border-top-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n.vc-popup-bottom-left:after {\n  top: -20px;\n  left: 9%;\n  border-top-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n", ""]);
 
 // exports
 
@@ -10956,7 +10968,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.vc-row * {\n  box-sizing: border-box;\n}\n.vc-row:before,\n.vc-row:after {\n  content: '';\n  display: table;\n  clear: both;\n}\n", ""]);
+exports.push([module.i, "\n[class*=vc-col] {\n  float: left;\n  min-height: 1px;\n  padding: 12px;\n}\n.vc-col-span-12 {\n  width: 100%;\n}\n.vc-col-span-11 {\n  width: 91.66666667%;\n}\n.vc-col-span-10 {\n  width: 83.33333333%;\n}\n.vc-col-span-9 {\n  width: 75%;\n}\n.vc-col-span-8 {\n  width: 66.66666667%;\n}\n.vc-col-span-7 {\n  width: 58.33333333%;\n}\n.vc-col-span-6 {\n  width: 50%;\n}\n.vc-col-span-5 {\n  width: 41.66666667%;\n}\n.vc-col-span-4 {\n  width: 33.33333333%;\n}\n.vc-col-span-3 {\n  width: 25%;\n}\n.vc-col-span-2 {\n  width: 16.66666667%;\n}\n.vc-col-span-1 {\n  width: 8.33333333%;\n}\n", ""]);
 
 // exports
 
@@ -10984,7 +10996,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.vc-popup-w {\n  display: inline-block;\n}\n.vc-popup-trigger {\n  display: inline-block;\n}\n.vc-popup {\n  position: absolute;\n  border-radius: 8px;\n  box-shadow: 0 4px 9px 0 rgba(0,0,0,0.3);\n  z-index: 10;\n}\n.vc-popup:after {\n  position: absolute;\n  display: block;\n  content: \"\";\n  pointer-events: none;\n}\n.vc-popup-c {\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n}\n.vc-popup-white {\n  background: #fff;\n}\n.vc-popup-white:after {\n  border: solid 10px #fff;\n}\n.vc-popup-black {\n  background: #3d3d3d;\n}\n.vc-popup-black:after {\n  border: solid 10px #3d3d3d;\n}\n.vc-popup-bottom {\n  box-shadow: 0 4px 9px 0 rgba(0,0,0,0.3);\n}\n.vc-popup-bottom:after {\n  top: -20px;\n  left: 50%;\n  margin-left: -10px;\n  border-top-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n.vc-popup-top:after {\n  top: 100%;\n  left: 50%;\n  margin-left: -10px;\n  border-bottom-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n.vc-popup-top-right:after {\n  top: 100%;\n  right: 46px;\n  border-bottom-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n.vc-popup-top-left:after {\n  top: 100%;\n  left: 46px;\n  border-bottom-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n.vc-popup-bottom-right:after {\n  top: -20px;\n  right: 12px;\n  border-top-color: transparent;\n  border-right-color: transparent;\n  border-left-color: transparent;\n}\n", ""]);
+exports.push([module.i, "\n.vc-row * {\n  box-sizing: border-box;\n}\n.vc-row:before,\n.vc-row:after {\n  content: '';\n  display: table;\n  clear: both;\n}\n", ""]);
 
 // exports
 
@@ -11685,7 +11697,7 @@ var Component = __webpack_require__(4)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/icourt/Desktop/vCourtnew/vcourt/src/components/alert/alert.vue"
+Component.options.__file = "/Users/icourt/Documents/vCourt-for-github-npm/src/components/alert/alert.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] alert.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11696,9 +11708,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-690ee757", Component.options)
+    hotAPI.createRecord("data-v-36cee4bb", Component.options)
   } else {
-    hotAPI.reload("data-v-690ee757", Component.options)
+    hotAPI.reload("data-v-36cee4bb", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -11715,13 +11727,13 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(159)
+  __webpack_require__(155)
 }
 var Component = __webpack_require__(4)(
   /* script */
   __webpack_require__(64),
   /* template */
-  __webpack_require__(150),
+  __webpack_require__(146),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -11729,7 +11741,7 @@ var Component = __webpack_require__(4)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/icourt/Desktop/vCourtnew/vcourt/src/components/button/button.vue"
+Component.options.__file = "/Users/icourt/Documents/vCourt-for-github-npm/src/components/button/button.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] button.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11740,9 +11752,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-73528ec6", Component.options)
+    hotAPI.createRecord("data-v-240ced01", Component.options)
   } else {
-    hotAPI.reload("data-v-73528ec6", Component.options)
+    hotAPI.reload("data-v-240ced01", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -11759,13 +11771,13 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(156)
+  __webpack_require__(160)
 }
 var Component = __webpack_require__(4)(
   /* script */
   __webpack_require__(65),
   /* template */
-  __webpack_require__(147),
+  __webpack_require__(151),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -11773,7 +11785,7 @@ var Component = __webpack_require__(4)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/icourt/Desktop/vCourtnew/vcourt/src/components/grid/col.vue"
+Component.options.__file = "/Users/icourt/Documents/vCourt-for-github-npm/src/components/grid/col.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] col.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11784,9 +11796,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5c02b7b9", Component.options)
+    hotAPI.createRecord("data-v-7dce54d5", Component.options)
   } else {
-    hotAPI.reload("data-v-5c02b7b9", Component.options)
+    hotAPI.reload("data-v-7dce54d5", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -11803,13 +11815,13 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(160)
+  __webpack_require__(162)
 }
 var Component = __webpack_require__(4)(
   /* script */
   __webpack_require__(66),
   /* template */
-  __webpack_require__(151),
+  __webpack_require__(153),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -11817,7 +11829,7 @@ var Component = __webpack_require__(4)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/icourt/Desktop/vCourtnew/vcourt/src/components/grid/row.vue"
+Component.options.__file = "/Users/icourt/Documents/vCourt-for-github-npm/src/components/grid/row.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] row.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11828,9 +11840,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-761b3313", Component.options)
+    hotAPI.createRecord("data-v-d0325fa2", Component.options)
   } else {
-    hotAPI.reload("data-v-761b3313", Component.options)
+    hotAPI.reload("data-v-d0325fa2", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -11861,7 +11873,7 @@ var Component = __webpack_require__(4)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/icourt/Desktop/vCourtnew/vcourt/src/components/icon/icon.vue"
+Component.options.__file = "/Users/icourt/Documents/vCourt-for-github-npm/src/components/icon/icon.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] icon.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11872,9 +11884,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-d9a79986", Component.options)
+    hotAPI.createRecord("data-v-aa578cbe", Component.options)
   } else {
-    hotAPI.reload("data-v-d9a79986", Component.options)
+    hotAPI.reload("data-v-aa578cbe", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -11891,13 +11903,13 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(155)
+  __webpack_require__(156)
 }
 var Component = __webpack_require__(4)(
   /* script */
   __webpack_require__(68),
   /* template */
-  __webpack_require__(146),
+  __webpack_require__(147),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -11905,7 +11917,7 @@ var Component = __webpack_require__(4)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/icourt/Desktop/vCourtnew/vcourt/src/components/line-through/line-through.vue"
+Component.options.__file = "/Users/icourt/Documents/vCourt-for-github-npm/src/components/line-through/line-through.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] line-through.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11916,9 +11928,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3d4657c6", Component.options)
+    hotAPI.createRecord("data-v-26939281", Component.options)
   } else {
-    hotAPI.reload("data-v-3d4657c6", Component.options)
+    hotAPI.reload("data-v-26939281", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -11949,7 +11961,7 @@ var Component = __webpack_require__(4)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/icourt/Desktop/vCourtnew/vcourt/src/components/mask/mask.vue"
+Component.options.__file = "/Users/icourt/Documents/vCourt-for-github-npm/src/components/mask/mask.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] mask.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11960,9 +11972,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1e2659c6", Component.options)
+    hotAPI.createRecord("data-v-0894d981", Component.options)
   } else {
-    hotAPI.reload("data-v-1e2659c6", Component.options)
+    hotAPI.reload("data-v-0894d981", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -11979,13 +11991,13 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(162)
+  __webpack_require__(159)
 }
 var Component = __webpack_require__(4)(
   /* script */
   __webpack_require__(70),
   /* template */
-  __webpack_require__(153),
+  __webpack_require__(150),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -11993,7 +12005,7 @@ var Component = __webpack_require__(4)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/icourt/Desktop/vCourtnew/vcourt/src/components/popup/popup.vue"
+Component.options.__file = "/Users/icourt/Documents/vCourt-for-github-npm/src/components/popup/popup.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] popup.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -12004,9 +12016,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-efd0ac12", Component.options)
+    hotAPI.createRecord("data-v-55d7a75b", Component.options)
   } else {
-    hotAPI.reload("data-v-efd0ac12", Component.options)
+    hotAPI.reload("data-v-55d7a75b", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -12037,7 +12049,7 @@ var Component = __webpack_require__(4)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/icourt/Desktop/vCourtnew/vcourt/src/components/toast/toast.vue"
+Component.options.__file = "/Users/icourt/Documents/vCourt-for-github-npm/src/components/toast/toast.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] toast.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -12048,9 +12060,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6e6a61ad", Component.options)
+    hotAPI.createRecord("data-v-3c2a5f11", Component.options)
   } else {
-    hotAPI.reload("data-v-6e6a61ad", Component.options)
+    hotAPI.reload("data-v-3c2a5f11", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -12084,12 +12096,39 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1e2659c6", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-0894d981", module.exports)
   }
 }
 
 /***/ }),
 /* 146 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('button', {
+    class: _vm.classes,
+    attrs: {
+      "disabled": _vm.disabled
+    },
+    on: {
+      "click": _vm.handleClick
+    }
+  }, [(_vm.icon) ? _c('Icon', {
+    attrs: {
+      "type": _vm.icon
+    }
+  }) : _vm._e(), _vm._v(" "), _c('span', [_vm._t("default")], 2)], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-240ced01", module.exports)
+  }
+}
+
+/***/ }),
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -12108,28 +12147,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-3d4657c6", module.exports)
-  }
-}
-
-/***/ }),
-/* 147 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    ref: "col",
-    staticClass: "vc-col",
-    style: ({
-      order: _vm.order
-    })
-  }, [_vm._t("default", [_vm._v(" i am  a col")])], 2)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-5c02b7b9", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-26939281", module.exports)
   }
 }
 
@@ -12186,7 +12204,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-690ee757", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-36cee4bb", module.exports)
   }
 }
 
@@ -12225,7 +12243,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6e6a61ad", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-3c2a5f11", module.exports)
   }
 }
 
@@ -12234,25 +12252,40 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('button', {
-    class: _vm.classes,
-    attrs: {
-      "disabled": _vm.disabled
-    },
+  return _c('div', {
+    directives: [{
+      name: "clickoutside",
+      rawName: "v-clickoutside",
+      value: (_vm.handleClose),
+      expression: "handleClose"
+    }],
+    staticClass: "vc-popup-w"
+  }, [_c('span', {
+    ref: "trigger",
+    staticClass: "vc-popup-trigger",
     on: {
-      "click": _vm.handleClick
+      "click": function($event) {
+        _vm.handleClose('useVisible')
+      }
     }
-  }, [(_vm.icon) ? _c('Icon', {
+  }, [_vm._t("trigger")], 2), _vm._v(" "), _c('transition', {
     attrs: {
-      "type": _vm.icon
+      "name": "slide-in-down"
     }
-  }) : _vm._e(), _vm._v(" "), _c('span', [_vm._t("default")], 2)], 1)
+  }, [(_vm.visibile) ? _c('div', {
+    ref: "ctn",
+    staticClass: "vc-popup",
+    class: _vm.classes,
+    style: (_vm.sizeStyle)
+  }, [_c('div', {
+    staticClass: "vc-popup-c"
+  }, [_vm._t("content")], 2)]) : _vm._e()])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-73528ec6", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-55d7a75b", module.exports)
   }
 }
 
@@ -12262,19 +12295,18 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "vc-row",
+    ref: "col",
+    staticClass: "vc-col",
     style: ({
-      display: _vm.type,
-      justifyContent: _vm.justify,
-      alignItems: _vm.align
+      order: _vm.order
     })
-  }, [_vm._t("default")], 2)
+  }, [_vm._t("default", [_vm._v(" i am  a col")])], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-761b3313", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-7dce54d5", module.exports)
   }
 }
 
@@ -12291,7 +12323,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-d9a79986", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-aa578cbe", module.exports)
   }
 }
 
@@ -12301,36 +12333,19 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    directives: [{
-      name: "clickoutside",
-      rawName: "v-clickoutside",
-      value: (_vm.handleClose),
-      expression: "handleClose"
-    }],
-    staticClass: "vc-popup-w"
-  }, [_c('span', {
-    ref: "trigger",
-    staticClass: "vc-popup-trigger",
-    on: {
-      "click": _vm.togglePopup
-    }
-  }, [_vm._t("trigger")], 2), _vm._v(" "), _c('transition', {
-    attrs: {
-      "name": "slide-in-down"
-    }
-  }, [(_vm.visibile) ? _c('div', {
-    staticClass: "vc-popup",
-    class: _vm.classes,
-    style: (_vm.sizeStyle)
-  }, [_c('div', {
-    staticClass: "vc-popup-c"
-  }, [_vm._t("content")], 2)]) : _vm._e()])], 1)
+    staticClass: "vc-row",
+    style: ({
+      display: _vm.type,
+      justifyContent: _vm.justify,
+      alignItems: _vm.align
+    })
+  }, [_vm._t("default")], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-efd0ac12", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-d0325fa2", module.exports)
   }
 }
 
@@ -12345,13 +12360,13 @@ var content = __webpack_require__(123);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("65982194", content, false);
+var update = __webpack_require__(5)("367c7278", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1e2659c6\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./mask.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1e2659c6\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./mask.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0894d981\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./mask.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-0894d981\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./mask.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -12371,13 +12386,13 @@ var content = __webpack_require__(124);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("42ec11ef", content, false);
+var update = __webpack_require__(5)("2045d5d4", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3d4657c6\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./line-through.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3d4657c6\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./line-through.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-240ced01\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./button.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-240ced01\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./button.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -12397,13 +12412,13 @@ var content = __webpack_require__(125);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("bf283df6", content, false);
+var update = __webpack_require__(5)("6cdb8d12", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5c02b7b9\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./col.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5c02b7b9\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./col.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-26939281\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./line-through.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-26939281\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./line-through.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -12423,13 +12438,13 @@ var content = __webpack_require__(126);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("1d993f59", content, false);
+var update = __webpack_require__(5)("8d13329e", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-690ee757\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./alert.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-690ee757\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./alert.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-36cee4bb\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./alert.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-36cee4bb\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./alert.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -12449,13 +12464,13 @@ var content = __webpack_require__(127);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("2f277afc", content, false);
+var update = __webpack_require__(5)("7027888a", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6e6a61ad\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./toast.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6e6a61ad\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./toast.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3c2a5f11\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./toast.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3c2a5f11\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./toast.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -12475,13 +12490,13 @@ var content = __webpack_require__(128);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("788e53da", content, false);
+var update = __webpack_require__(5)("0806fb42", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-73528ec6\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./button.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-73528ec6\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./button.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-55d7a75b\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./popup.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-55d7a75b\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./popup.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -12501,13 +12516,13 @@ var content = __webpack_require__(129);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("9c7d8516", content, false);
+var update = __webpack_require__(5)("3f1f5d82", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-761b3313\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./row.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-761b3313\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./row.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7dce54d5\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./col.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7dce54d5\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./col.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -12527,13 +12542,13 @@ var content = __webpack_require__(130);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("a978df30", content, false);
+var update = __webpack_require__(5)("5e00467e", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d9a79986\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./icon.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d9a79986\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./icon.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-aa578cbe\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./icon.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-aa578cbe\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./icon.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -12553,13 +12568,13 @@ var content = __webpack_require__(131);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(5)("530bd136", content, false);
+var update = __webpack_require__(5)("14faa04c", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-efd0ac12\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./popup.vue", function() {
-     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-efd0ac12\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./popup.vue");
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d0325fa2\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./row.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d0325fa2\",\"scoped\":false,\"hasInlineConfig\":false}!../../../node_modules/stylus-loader/index.js!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./row.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
