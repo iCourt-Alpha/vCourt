@@ -666,14 +666,14 @@ module.exports = Object.keys || function keys(O){
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return on; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return off; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return on; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return off; });
 /* unused harmony export once */
 /* unused harmony export hasClass */
 /* harmony export (immutable) */ __webpack_exports__["b"] = addClass;
-/* harmony export (immutable) */ __webpack_exports__["c"] = removeClass;
+/* harmony export (immutable) */ __webpack_exports__["d"] = removeClass;
 /* unused harmony export getStyle */
-/* unused harmony export setStyle */
+/* harmony export (immutable) */ __webpack_exports__["c"] = setStyle;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return dom; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__ = __webpack_require__(80);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_helpers_typeof__);
@@ -8779,53 +8779,43 @@ function createToast(type) {
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   bind: function bind(el, binding, vnode) {
-    var div = document.createElement('div');
-    div.innerHTML = binding.value;
-    div.className = 'vc-tooltip-c';
-    el.appendChild(div);
+    var tooltip = document.createElement('div');
+    var disappearTimeout = void 0;
+    tooltip.className = 'vc-tooltip-c';
+    el.appendChild(tooltip);
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["b" /* addClass */])(el, 'vc-tooltip');
-    el.__div = div;
-    var disappearTimeout;
-
     var onMouseOver = function onMouseOver() {
       if (disappearTimeout) {
         clearTimeout(disappearTimeout);
       }
+      tooltip.innerText = binding.value || binding.expression;
       var size = el.getBoundingClientRect();
-      div.style.top = size.top - 29 + 'px';
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["c" /* setStyle */])(tooltip, 'left', size.left + 'px');
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["c" /* setStyle */])(tooltip, 'top', size.top - 29 + 'px');
       __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["b" /* addClass */])(el, 'vc-tooltip-cal');
       setTimeout(function () {
-        var toolSize = div.getBoundingClientRect();
-        div.style.marginLeft = (0 - toolSize.width + size.width) / 2 + 'px';
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["b" /* addClass */])(el, 'vc-tooltip-show');
       }, 10);
     };
-
     var onMouseOut = function onMouseOut(e) {
       if (e.target === el || !el.contains(e.target)) {
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["c" /* removeClass */])(el, 'vc-tooltip-show');
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["d" /* removeClass */])(el, 'vc-tooltip-show');
         disappearTimeout = setTimeout(function () {
-          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["c" /* removeClass */])(el, 'vc-tooltip-cal');
+          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["d" /* removeClass */])(el, 'vc-tooltip-cal');
         }, 150);
       }
     };
     el._mouseOverHandler = onMouseOver;
     el._mouseOutHandler = onMouseOut;
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["d" /* on */])(el, 'mouseover', onMouseOver);
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["d" /* on */])(el, 'mouseout', onMouseOut);
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["d" /* on */])(el, 'mouseleave', onMouseOut);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["e" /* on */])(el, 'mouseover', onMouseOver);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["e" /* on */])(el, 'mouseout', onMouseOut);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["e" /* on */])(el, 'mouseleave', onMouseOut);
   },
 
-  update: function update(el, binding) {
-    el.__div.innerHTML = binding.value;
-    var size = el.getBoundingClientRect();
-    var toolSize = el.__div.getBoundingClientRect();
-    el.__div.style.marginLeft = (0 - toolSize.width + size.width) / 2 + 'px';
-  },
   unbind: function unbind(el) {
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["e" /* off */])(el, 'mouseover', el._mouseOverHandler);
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["e" /* off */])(el, 'mouseout', el._mouseOutHandler);
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["e" /* off */])(el, 'mouseleave', el._mouseOutHandler);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["f" /* off */])(el, 'mouseover', el._mouseOverHandler);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["f" /* off */])(el, 'mouseout', el._mouseOutHandler);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_dom__["f" /* off */])(el, 'mouseleave', el._mouseOutHandler);
   }
 });
 
@@ -9482,7 +9472,7 @@ var oneOf = function oneOf(value, list) {
 var nodeList = [];
 var ctx = '$$clickoutsideContext';
 
-__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__dom__["d" /* on */])(document, 'click', function (e) {
+__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__dom__["e" /* on */])(document, 'click', function (e) {
   nodeList.forEach(function (node) {
     return node[ctx].documentHandler(e);
   });
