@@ -11,10 +11,10 @@
     "fighting": "webpack --config webpack.config.js"
   },
   "dependencies": {
-    "resolve-url-loader": "^2.0.3",
     "vue": "^2.3.3"
   },
   "devDependencies": {
+    "resolve-url-loader": "^2.0.3",
     "autoprefixer": "^6.7.2",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
