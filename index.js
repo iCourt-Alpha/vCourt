@@ -1,2 +1,2 @@
-import vCourt from './dist/main'
+import vCourt from './dist/js/vcourt.min.js'
 export default vCourt
