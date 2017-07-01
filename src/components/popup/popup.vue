@@ -134,19 +134,19 @@
   width 100%
   height 100%
   overflow auto
-.iui-popup-white
+.vc-popup-white
   background #fff
   &:after
     border solid 10px #fff
   &:before
     border solid 11px #f0f0f0
-.iui-popup-black
+.vc-popup-black
   background #3d3d3d
   &:after
     border solid 10px #3d3d3d
   &:before
     border solid 12px #3d3d3d
-.iui-popup-bottom
+.vc-popup-bottom
   box-shadow 0 4px 9px 0 rgba(0, 0, 0, 0.3)
   &:after
     top -20px
@@ -162,7 +162,7 @@
     border-top-color transparent
     border-right-color transparent
     border-left-color transparent
-.iui-popup-top
+.vc-popup-top
   &:after
     top 100%
     left 50%
