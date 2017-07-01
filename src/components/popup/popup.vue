@@ -115,76 +115,118 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  @import "../../stylus/animation.styl"
-  .vc-popup-w
-    display inline-block
-  .vc-popup-trigger
-    display inline-block
-  .vc-popup
+@import "../../stylus/animation.styl"
+.vc-popup-w
+  display inline-block
+.vc-popup-trigger
+  display inline-block
+.vc-popup
+  position absolute
+  border-radius 8px
+  box-shadow 0 4px 9px 0 rgba(0, 0, 0, 0.3)
+  z-index 10
+  &:after
     position absolute
-    border-radius 8px
-    box-shadow 0 4px 9px 0 rgba(0, 0, 0, 0.3)
-    z-index 10
-    &:after
-      position absolute
-      display block
-      content ""
-      pointer-events none
-  .vc-popup-c
-    width 100%
-    height 100%
-    overflow auto
-  .vc-popup-white
-    background #fff
-    &:after
-      border solid 10px #fff
-  .vc-popup-black
-    background #3d3d3d
-    &:after
-      border solid 10px #3d3d3d
-  .vc-popup-bottom
-    box-shadow 0 4px 9px 0 rgba(0, 0, 0, 0.3)
-    &:after
-      top -20px
-      left 50%
-      margin-left -10px
-      border-top-color transparent
-      border-right-color transparent
-      border-left-color transparent
-  .vc-popup-top
-    &:after
-      top 100%
-      left 50%
-      margin-left -10px
-      border-bottom-color transparent
-      border-right-color transparent
-      border-left-color transparent
-  .vc-popup-top-right
-    &:after
-      top 100%
-      right 9%
-      border-bottom-color transparent
-      border-right-color transparent
-      border-left-color transparent
-  .vc-popup-top-left
-    &:after
-      top 100%
-      left 9%
-      border-bottom-color transparent
-      border-right-color transparent
-      border-left-color transparent
-  .vc-popup-bottom-right
-    &:after
-      top -20px
-      right 5%
-      border-top-color transparent
-      border-right-color transparent
-      border-left-color transparent
-  .vc-popup-bottom-left
-    &:after
-      top -20px
-      left 9%
-      border-top-color transparent
-      border-right-color transparent
-      border-left-color transparent
+    display block
+    content ""
+    pointer-events none
+.vc-popup-c
+  width 100%
+  height 100%
+  overflow auto
+.iui-popup-white
+  background #fff
+  &:after
+    border solid 10px #fff
+  &:before
+    border solid 11px #f0f0f0
+.iui-popup-black
+  background #3d3d3d
+  &:after
+    border solid 10px #3d3d3d
+  &:before
+    border solid 12px #3d3d3d
+.iui-popup-bottom
+  box-shadow 0 4px 9px 0 rgba(0, 0, 0, 0.3)
+  &:after
+    top -20px
+    left 50%
+    margin-left -10px
+    border-top-color transparent
+    border-right-color transparent
+    border-left-color transparent
+  &:before
+    top -22px
+    left 50%
+    margin-left -11px
+    border-top-color transparent
+    border-right-color transparent
+    border-left-color transparent
+.iui-popup-top
+  &:after
+    top 100%
+    left 50%
+    margin-left -10px
+    border-bottom-color transparent
+    border-right-color transparent
+    border-left-color transparent
+  &:before
+    top 100%
+    left 50%
+    margin-left -11px
+    border-bottom-color transparent
+    border-right-color transparent
+    border-left-color transparent
+.vc-popup-top-right
+  &:after
+    top 100%
+    right 46px
+    border-bottom-color transparent
+    border-right-color transparent
+    border-left-color transparent
+  &:before
+    top 100%
+    right 45px
+    border-bottom-color transparent
+    border-right-color transparent
+    border-left-color transparent
+.vc-popup-top-left
+  &:after
+    top 100%
+    left 46px
+    border-bottom-color transparent
+    border-right-color transparent
+    border-left-color transparent
+  &:before
+    top 100%
+    left 45px
+    border-bottom-color transparent
+    border-right-color transparent
+    border-left-color transparent
+.vc-popup-bottom-right
+  &:after
+    top -20px
+    right 12px
+    border-top-color transparent
+    border-right-color transparent
+    border-left-color transparent
+  &:before
+    top -22px
+    right 11px
+    border-top-color transparent
+    border-right-color transparent
+    border-left-color transparent
+.vc-popup-bottom-left
+  &:after
+    top -20px
+    left 12px
+    border-top-color transparent
+    border-right-color transparent
+    border-left-color transparent
+  &:before
+    top -22px
+    left 11px
+    border-top-color transparent
+    border-right-color transparent
+    border-left-color transparent
 </style>
