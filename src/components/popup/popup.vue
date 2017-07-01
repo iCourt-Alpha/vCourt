@@ -125,7 +125,7 @@
   border-radius 8px
   box-shadow 0 4px 9px 0 rgba(0, 0, 0, 0.3)
   z-index 10
-  &:after
+  &:after, &:before
     position absolute
     display block
     content ""
