@@ -6,6 +6,7 @@ import vcMask from './components/mask'
 import { Row } from './components/grid'
 import { Col } from './components/grid'
 import vcPopup from './components/popup'
+import vcLoader from './components/loader'
 
 // components add to to prototype
 import alert from './components/alert'
@@ -13,6 +14,7 @@ import toast from './components/toast'
 
 // directive
 import tooltip from './components/tooltip'
+import loader from './components/loader/direc'
 import { dom } from './utils/dom'
 
 const vcAddToComponents = {
@@ -22,7 +24,8 @@ const vcAddToComponents = {
   vcMask,
   vcPopup,
   vcRow: Row,
-  vcCol: Col
+  vcCol: Col,
+  vcLoader
 }
 
 const vcAddToPrototype = {
@@ -31,7 +34,8 @@ const vcAddToPrototype = {
 }
 
 const vcAddToDirective = {
-  tooltip
+  tooltip,
+  vcLoader: loader
 }
 
 const install = Vue =>{
