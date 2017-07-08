@@ -9,7 +9,7 @@ export default {
   update (el, binding, vnode) {
     if (el._isLoading) return
     let p = binding.value
-    if (p instanceof Promise) {
+    if (p && p.then) {
       let elPos = getStyle(el, 'position')
       if (elPos === 'static') {
         el._originPos = 'static'
