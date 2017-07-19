@@ -34,7 +34,7 @@ const vcAddToPrototype = {
 }
 
 const vcAddToDirective = {
-  tooltip,
+  vcTooltip,
   vcLoader: loader
 }
 
