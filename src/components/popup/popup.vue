@@ -127,8 +127,9 @@
   display inline-block
 .vc-popup
   position absolute
-  border-radius 8px
-  box-shadow 0 4px 9px 0 rgba(0, 0, 0, 0.3)
+  box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.1)
+  border-radius: 10px
+  border: solid 1px #e5e5e5
   z-index 10
   &:after, &:before
     position absolute
@@ -152,7 +153,6 @@
   &:before
     border solid 12px #3d3d3d
 .vc-popup-noarrow
-  margin-top: -4px !important
   &:after
     border: none
   &:before
