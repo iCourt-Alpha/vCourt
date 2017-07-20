@@ -13,7 +13,7 @@ import alert from './components/alert'
 import toast from './components/toast'
 
 // directive
-import tooltip from './components/tooltip'
+import vcTooltip from './components/tooltip'
 import loader from './components/loader/direc'
 import { dom } from './utils/dom'
 
@@ -34,7 +34,7 @@ const vcAddToPrototype = {
 }
 
 const vcAddToDirective = {
-  tooltip,
+  vcTooltip,
   vcLoader: loader
 }
 

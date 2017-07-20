@@ -67,7 +67,7 @@ export default {
 @import "../../stylus/constant.styl"
 .vc-button
   color #fff
-  font-size 13px
+  font-size 12px
   text-align center
   line-height 30px
   border none
