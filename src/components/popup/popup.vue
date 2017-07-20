@@ -33,7 +33,12 @@
         default: 0
       },
       // 浮窗是否可见
-      visible: false
+      visible: false,
+      // 是否有箭头
+      arrow: {
+        type: Boolean,
+        default: true
+      }
     },
     data: function () {
       return {
@@ -48,7 +53,7 @@
     },
     computed: {
       classes: function () {
-        return `vc-popup-${this.type} vc-popup-${this.position}`
+        return `vc-popup-${this.type} vc-popup-${this.position} ${this.arrow ? '' : 'vc-popup-noarrow'}`
       }
     },
     directives: {
@@ -146,6 +151,12 @@
     border solid 10px #3d3d3d
   &:before
     border solid 12px #3d3d3d
+.vc-popup-noarrow
+  margin-top: -4px !important
+  &:after
+    border: none
+  &:before
+    border: none
 .vc-popup-bottom
   box-shadow 0 4px 9px 0 rgba(0, 0, 0, 0.3)
   &:after
