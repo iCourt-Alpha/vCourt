@@ -1,15 +1,16 @@
 <template>
   <transition name="slide-in-down" v-on:after-leave="afterLeave">
-    <div class="vc-toast-c" :class="type" v-if="show">
+    <div ref="toast" class="vc-toast" :class="type" v-if="show">
       <Icon :type="iconType" class="type"></Icon>
-      <p>{{msg}}</p>
-      <a @click="closeToast"><Icon type="close" class="close"></Icon></a>
+      <p class="ctn">{{msg}}</p>
+      <a class="closebtn" @click="closeToast"><Icon type="close" class="close"></Icon></a>
     </div>
   </transition>
 </template>
 
 <script>
 import Icon from '../icon'
+import { dom } from '../../utils/dom'
 export default {
   name: 'toast',
   props: {
@@ -29,17 +30,6 @@ export default {
       iconType: ''
     }
   },
-  mounted: function () {
-    var that = this
-    that._timeout = setTimeout(function () {
-      that.$emit('close')
-    }, that.duration * 1000)
-    const _iconMap = {
-      'danger': 'warning',
-      'info': 'done'
-    }
-    this.iconType = _iconMap[this.type]
-  },
   methods: {
     closeToast: function () {
       if (this._timeout) {
@@ -51,6 +41,27 @@ export default {
     afterLeave () {
       this.$emit('afterLeave')
     }
+  },
+  mounted () {
+    var that = this
+    console.log(this.$el)
+    that._timeout = setTimeout(function () {
+      that.$emit('close')
+    }, that.duration * 1000)
+    const _iconMap = {
+      'danger': 'warning',
+      'info': 'done'
+    }
+    this.iconType = _iconMap[this.type]
+  },
+  updated () {
+    let t = this.$refs.toast
+    if (!t) return
+    let _width = dom.getStyle(t, 'width')
+    console.log('_width', _width)
+    if (_width) {
+      dom.setStyle(t, 'margin-left', '-' + Number(_width.split('px')[0]) / 2 + 'px')
+    }
   }
 }
 </script>
@@ -60,40 +71,35 @@ export default {
 @import "../../stylus/customize.styl"
 
 toastHeight = 48px
-toastWidth = 260px
 
-.vc-toast-c
+.vc-toast
   position fixed
   top 90px
   left 50%
-  margin-left -(toastWidth/2)
   border-radius 24px
   height toastHeight
   z-index toastZ
   background lightBaseColor
-  width toastWidth
   color #fff
-  display flex
   line-height toastHeight
   box-shadow 0 4px 9px 0 rgba(0, 0, 0, 0.2)
-  a
+  .closebtn
     color #fff
   .type
     font-size 20px
     margin-left 20px
     position relative
-    top 3px
+    top 4px
   .close
     font-size 14px
     margin-right 20px
     position relative
     top 2px
     cursor pointer
-  p
+  .ctn
+    display: inline-block
     padding 0 10px
-    flex 1
     height 50px
-    overflow hidden
     font-size 14px
   &.danger
     background errorColor

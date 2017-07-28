@@ -1,14 +1,9 @@
 <template>
-<transition name="fast-fade">
-  <div v-if="isShow" :class="{'vc-loader-darkmask':dark,'vc-loader-wrapper':directiveStyle}">
-    <div class="vc-loader" :class="vcClass">
-      <Icon type="alpha"></Icon>
-      <svg viewBox="25 25 50 50" class="vc-loader-circle">
-        <circle cx="50" cy="50" r="20" fill="none" stroke="#ED6C00" stroke-width="0.5" class="vc-loader-path"></circle>
-      </svg>
+  <transition name="fast-fade">
+    <div v-if="isShow" :class="{'vc-loader-darkmask':dark,'vc-loader-wrapper':directiveStyle}">
+      <div class="vc-loader" :class="vcClass"></div>
     </div>
-  </div>
-</transition>
+  </transition>
 </template>
 
 <script>
@@ -74,6 +69,16 @@ export default {
     stroke: #ed6c00;
   }
 }
+
+@keyframes loadingAnimation {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-2816px, 0, 0);
+  }
+}
+
 .vc-loader-wrapper
   width: 100%
   height: 100%
@@ -87,30 +92,26 @@ export default {
   left: 50%
   top: 50%
   transform:translate(-50%, -50%)
+
 .vc-loader
   font-size 40px
-  color lightBaseColor
   position relative
-  width 100px
-  height 100px
-  .vc-icon
+  width 64px
+  height 64px
+  overflow hidden
+  &:after
+    content ""
     position absolute
-    width 100%
+    top 0
+    left 0
+    display block
+    width 2880px
     height 100%
-    text-align center
-    line-height 110px
+    background url(./assets/loading.png) no-repeat 0 0
+    background-size 2880px 128px
+    animation loadingAnimation 1200ms steps(44) infinite
 .vc-loader-small
-  width 40px
-  height 40px
-  font-size 20px
-  .vc-icon
-    line-height 46px
-.vc-loader-circle
-  animation rotate 2s linear infinite
-  transform-origin center center
-.vc-loader-path
-  stroke-dasharray: 150,200;
-  stroke-dashoffset: -10;
-  stroke-linecap: round;
-  animation: loader-dash 1.5s ease-in-out infinite, loader-color 3s ease-in-out infinite;
+  transform scale3d(0.6, 0.6, 1)
+.vc-loader-white
+  background-position 0 -64px
 </style>
