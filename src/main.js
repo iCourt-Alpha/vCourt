@@ -8,7 +8,7 @@ import { Col } from './components/grid'
 import vcPopup from './components/popup'
 import vcLoader from './components/loader'
 
-// components add to to prototype
+// components add to prototype
 import alert from './components/alert'
 import toast from './components/toast'
 
