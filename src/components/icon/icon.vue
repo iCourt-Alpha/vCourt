@@ -206,4 +206,12 @@ export default {
 .vc-icon-board:before { content: "\EB66" }
 .vc-icon-vault:before { content: "\EB67" }
 .vc-icon-view:before { content: "\EB68" }
+.vc-icon-key-enter:before { content: "\EB69" }
+.vc-icon-key-shift:before { content: "\EB71" }
+.vc-icon-shared:before { content: "\EB72" }
+.vc-icon-video:before { content: "\EB73" }
+.vc-icon-percent:before { content: "\EB74" }
+.vc-icon-number:before { content: "\EB75" }
+.vc-icon-trash-empty:before { content: "\EB76" }
+
 </style>
